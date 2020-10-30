@@ -1,0 +1,2 @@
+login: angular_vadym
+password: X3nGb9upKqap5x8W

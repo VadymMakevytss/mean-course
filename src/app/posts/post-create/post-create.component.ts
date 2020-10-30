@@ -20,7 +20,7 @@ export class PostCreateComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onAddPost(form: NgForm) {
+  onAddPost(form: NgForm): void {
     if (form.invalid) {
       return;
     }
