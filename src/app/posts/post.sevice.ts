@@ -10,6 +10,7 @@ export class PostsService {
 
   private posts: IPost[] = [];
   private postUpdated = new Subject<IPost[]>();
+  router: any;
 
   constructor(private http: HttpClient) { }
 
@@ -45,6 +46,25 @@ export class PostsService {
         this.postUpdated.next([...this.posts]);
       });
 
+  }
+
+  updatePost(id: string, title: string, content: string): any {
+    const post: IPost = { id, title, content };
+    this.http
+      .put('http://localhost:3000/api/posts/' + id, post)
+      .subscribe(response => {
+        const updatedPosts = [...this.posts];
+        const oldPostIndex = updatedPosts.findIndex(p => p.id === post.id);
+        updatedPosts[oldPostIndex] = post;
+        this.posts = updatedPosts;
+        this.postUpdated.next([...this.posts]);
+        this.router.navigate(['/']);
+      });
+  }
+
+  getPost(id: string): any {
+    return this.http
+      .get<{ _id: string, title: string, content: string }>('http://localhost:3000/api/posts/' + id);
   }
 
   deletePost(postId: string): void {
