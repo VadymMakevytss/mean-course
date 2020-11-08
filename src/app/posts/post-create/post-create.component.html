@@ -20,7 +20,9 @@
     </div>
     <div
       class="image-preview"
-      *ngIf="imagePreview !== '' && imagePreview !== null"
+      *ngIf="
+        imagePreview !== '' && imagePreview !== null && form.get('image').valid
+      "
     >
       <img [src]="imagePreview" [alt]="form.value.title" />
     </div>
