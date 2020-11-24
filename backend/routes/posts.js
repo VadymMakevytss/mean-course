@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const { countDocuments } = require("../models/post");
 
 const Post = require("../models/post");
 
@@ -77,14 +78,25 @@ router.get("", (req, res, next) => {
   const currentPage = +req.query.page;
   // Default query
   const postQuery = Post.find();
+  // Store documents
+  let fetchedPosts;
+
   if (pageSize && currentPage) {
     postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
   }
-  postQuery.then((documents) => {
+  postQuery
+    .then((documents) => {
+    // Instead of response return another query
+    fetchedPosts = documents;
+      // @ts-ignore
+    return Post.count();
+  })
+    .then(count => {
     res.status(200).json({
-      message: "Posts fetched successfully!",
-      posts: documents,
-    });
+      message: 'Post fetched successfully!',
+      posts: fetchedPosts,
+      maxPosts: count
+    })
   });
 });
 
