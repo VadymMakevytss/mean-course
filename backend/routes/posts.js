@@ -72,7 +72,7 @@ router.put(
 );
 
 router.get("", (req, res, next) => {
-  // Create pagination query
+  // Create pagination query where query -> after ? in browser
   const pageSize = +req.query.pagesize;
   const currentPage = +req.query.page;
   // Default query
